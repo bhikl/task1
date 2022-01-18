@@ -1,6 +1,6 @@
 ---
 - name: Install Apache
-  hosts: server
+  hosts: all
   become: yes
   
   vars:

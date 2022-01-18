@@ -1,6 +1,6 @@
 ---
 - name: Configure grub
-  hosts: server
+  hosts: all
   become: yes
   
   vars:

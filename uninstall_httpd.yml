@@ -1,6 +1,6 @@
 ---
 - name: Uninstall Apache
-  hosts: server
+  hosts: all
   become: yes
   
   vars:
