@@ -1,0 +1,23 @@
+---
+- name: Uninstall Apache
+  hosts: server
+  become: yes
+  
+  vars:
+     dest_file  : /var/www/html/index.html
+
+  tasks:
+  - name: Uninstall Apache Web Server
+    yum: 
+      name: httpd 
+      state: absent
+  - name: Delete my HomePage from Server
+    file:
+      path:  "{{ dest_file}}"
+      state: absent
+  - name: Close HTTP Port 
+    firewalld:
+      port: 80/tcp
+      permanent: true
+      state: disabled
+      immediate: true

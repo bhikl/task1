@@ -1,0 +1,38 @@
+---
+- name: Install Apache
+  hosts: server
+  become: yes
+  
+  vars:
+     source_file: ./index.html
+     dest_file  : /var/www/html
+
+  tasks:
+  - name: Install Apache Web Server
+    yum: 
+      name: httpd 
+      state: latest
+  - name: Open HTTP Port 
+    firewalld:
+      port: 80/tcp
+      permanent: true
+      state: enabled
+      immediate: true
+  - name: Copy my Page to Server
+    copy: 
+      src: "{{ source_file }}"
+      dest: "{{ dest_file }}"
+      mode: 0555
+    notify: 
+    - Restart Apache
+  - name: Start and Enable Apache Web Server
+    service: 
+      name: httpd 
+      state: started 
+      enabled: yes
+
+  handlers:
+    - name: Restart Apache
+      service: 
+        name: httpd 
+        state: restarted

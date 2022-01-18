@@ -1,0 +1,19 @@
+---
+- name: Configure grub
+  hosts: server
+  become: yes
+  
+  vars:
+     dest_file  : /etc/default/grub
+
+  tasks:
+  - lineinfile:
+      path: "{{ dest_file }}"
+      regexp: '(GRUB_CMDLINE_LINUX=")(.*)(?<!net.ifnames=0 biosdevname=0)"'
+      line: '\1 \2 net.ifnames=0 biosdevname=0"'
+      backrefs: yes
+    notify: 
+    - Make Grub Config
+  handlers:
+    - name: Make Grub Config
+      command: grub2-mkconfig -o /boot/grub2/grub.cfg
